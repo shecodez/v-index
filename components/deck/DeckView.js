@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { getData } from "./../utils/api";
+import { getData } from "./../../utils/api";
 
 class DeckView extends React.Component {
 	render() {
@@ -9,7 +9,7 @@ class DeckView extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Text>{decks[index].title}</Text>
-				<Text>{decks[index].cards.length}</Text>
+				<Text>{decks[index].cards.length} Cards</Text>
 			</View>
 		);
 	}

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, Button, TextInput } from "react-native";
-import { saveDeck } from "./../utils/api";
-// import { addDeck } from '../actions';
+import { saveDeck } from "./../../utils/api";
+// import { addDeck } from './../../actions';
 
 class NewDeck extends React.Component {
 	state = {

@@ -1,5 +1,8 @@
-// front: can be a image, text, or video
-// back: shows answer, info about answer, and details
+import { AsyncStorage } from "react-native";
+const VINDEXCARDS_STORAGE_KEY = "vindexcards: decks";
+
+// front: can be a image, text, video, sound, or equation
+// back: shows answer, info about the question, and notes about the answer
 
 const initData = {
 	Japanese: {
@@ -18,7 +21,7 @@ const initData = {
 						Jouyou_Grade: "1",
 						JLPT: "5"
 					},
-					details: {
+					notes: {
 						Kanji: "一",
 						Constituents: "one",
 						Stroke_Diagram: "<gif>",
@@ -38,7 +41,7 @@ const initData = {
 						Jouyou_Grade: "1",
 						JLPT: "5"
 					},
-					details: {
+					notes: {
 						Kanji: "四",
 						Constituents: "four, mouth, legs",
 						Stroke_Diagram: "<gif>",
@@ -60,7 +63,7 @@ const initData = {
 				back: {
 					answer: "Something that stores information",
 					info: {},
-					details: {}
+					notes: {}
 				},
 				status: "EASY"
 			},
@@ -71,7 +74,7 @@ const initData = {
 					answer:
 						"The combination of a function and the lexical environment within which that function was declared",
 					info: {},
-					details: {}
+					notes: {}
 				},
 				status: "GOOD"
 			}
@@ -88,9 +91,9 @@ export function getDecks(deck) {
 		if (results === null) {
 			AsyncStorage.setItem(
 				VINDEXCARDS_STORAGE_KEY,
-				JSON.stringify(initialData)
+				JSON.stringify(initData)
 			);
-			return initialData;
+			return initData;
 		} else {
 			return JSON.parse(results);
 		}

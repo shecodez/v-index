@@ -6,12 +6,15 @@ import {
 } from "react-navigation";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { purple, white } from "./utils/colors";
+import { Provider } from "react-redux";
 
-import NewDeck from "./components/NewDeck";
-import DeckList from "./components/DeckList";
-import DeckView from "./components/DeckView";
+import configureStore from "./store/configureStore";
+const store = configureStore();
 
-// TODO: ADD share button to each deck
+import NewDeck from "./components/deck/NewDeck";
+import DeckList from "./components/deck/DeckList";
+import DeckView from "./components/deck/DeckView";
+
 const Tabs = createBottomTabNavigator(
 	{
 		DeckList: {
@@ -21,7 +24,7 @@ const Tabs = createBottomTabNavigator(
 				tabBarIcon: ({ tintColor }) => (
 					<MaterialCommunityIcons
 						name="cards"
-						size={28}
+						size={30}
 						color={tintColor}
 					/>
 				)
@@ -34,12 +37,14 @@ const Tabs = createBottomTabNavigator(
 				tabBarIcon: ({ tintColor }) => (
 					<FontAwesome
 						name="plus-square"
-						size={28}
+						size={30}
 						color={tintColor}
 					/>
 				)
 			}
 		}
+		// Browse: {<MaterialCommunityIcons name="folder-search" size={30} color={tintColor} />}
+		// account: { <FontAwesome name="user" size={30} color={tintColor} /> }
 	},
 	{
 		tabBarOptions: {
@@ -74,15 +79,11 @@ const MainNavigator = createStackNavigator({
 export default class App extends React.Component {
 	render() {
 		return (
-			<View style={styles.container}>
-				<MainNavigator />
-			</View>
+			<Provider store={store}>
+				<View style={{ flex: 1 }}>
+					<MainNavigator />
+				</View>
+			</Provider>
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	}
-});

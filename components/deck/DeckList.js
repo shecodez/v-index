@@ -1,16 +1,22 @@
 import React from "react";
+import { connect } from "react-redux";
 import { StyleSheet, Text, View, Button } from "react-native";
-import { getData } from "./../utils/api";
+import { getData, getDecks } from "../../utils/api";
+import { receiveDecks } from "../../actions/decks";
 
 class DeckList extends React.Component {
-	/* goto = deck => {
+	goto = deck => {
 		this.props.navigation.navigate("DeckView", {
 			entryId: deck
 		});
-    }; */
+	};
+
+	componentDidMount() {
+		getDecks().then(decks => this.props.receiveAllDecks(decks));
+	}
 
 	render() {
-		const decks = getData();
+		const { decks } = this.props;
 
 		return (
 			<View style={styles.container}>
@@ -21,12 +27,9 @@ class DeckList extends React.Component {
 							<Text>{title}</Text>
 							<Text>{topic}</Text>
 							<Text>{cards.length} Cards</Text>
+
 							<Button
-								onPress={() =>
-									this.props.navigation.navigate("DeckView", {
-										entryId: deck
-									})
-								}
+								onPress={() => this.goto(deck)}
 								title="View Deck"
 							/>
 						</View>
@@ -45,4 +48,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default DeckList;
+function mapStateToProps(state) {
+	return {
+		decks: state.decks
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		receiveAllDecks: decks => dispatch(receiveDecks(decks))
+	};
+}
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(DeckList);
