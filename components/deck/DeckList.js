@@ -1,19 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
 import { StyleSheet, Text, View, Button } from "react-native";
-import { getData, getDecks } from "../../utils/api";
+import { getDecks } from "../../utils/api";
 import { receiveDecks } from "../../actions/decks";
 
 class DeckList extends React.Component {
+	componentDidMount() {
+		getDecks().then(decks => this.props.receiveAllDecks(decks));
+	}
+
 	goto = deck => {
 		this.props.navigation.navigate("DeckView", {
 			entryId: deck
 		});
 	};
-
-	componentDidMount() {
-		getDecks().then(decks => this.props.receiveAllDecks(decks));
-	}
 
 	render() {
 		const { decks } = this.props;

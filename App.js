@@ -15,6 +15,8 @@ import NewDeck from "./components/deck/NewDeck";
 import DeckList from "./components/deck/DeckList";
 import DeckView from "./components/deck/DeckView";
 
+import NewCard from "./components/card/NewCard";
+
 const Tabs = createBottomTabNavigator(
 	{
 		DeckList: {
@@ -68,6 +70,16 @@ const MainNavigator = createStackNavigator({
 		screen: DeckView,
 		navigationOptions: {
 			title: "Deck Info",
+			headerTintColor: white,
+			headerStyle: {
+				backgroundColor: purple
+			}
+		}
+	},
+	NewCard: {
+		screen: NewCard,
+		navigationOptions: {
+			title: "New Card",
 			headerTintColor: white,
 			headerStyle: {
 				backgroundColor: purple

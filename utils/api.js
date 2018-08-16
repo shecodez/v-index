@@ -101,7 +101,7 @@ export function getDecks(deck) {
 }
 
 export function saveDeck(deck) {
-	return AsyncStorage.getItem(
+	return AsyncStorage.mergeItem(
 		VINDEXCARDS_STORAGE_KEY,
 		JSON.stringify({
 			[deck.title]: {
@@ -112,4 +112,17 @@ export function saveDeck(deck) {
 			}
 		})
 	);
+}
+
+export function saveCardToDeck(deck, card) {
+	return AsyncStorage.getItem(VINDEXCARDS_STORAGE_KEY)
+		.then(results => JSON.parse(results))
+		.then(results => {
+			results[deck].cards.push(card);
+			AsyncStorage.setItem(
+				VINDEXCARDS_STORAGE_KEY,
+				JSON.stringify(results)
+			);
+			return results;
+		});
 }

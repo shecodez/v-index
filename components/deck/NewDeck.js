@@ -1,7 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
 import { StyleSheet, View, Text, Button, TextInput } from "react-native";
 import { saveDeck } from "./../../utils/api";
-// import { addDeck } from './../../actions';
+import { addDeck } from "./../../actions/decks";
 
 class NewDeck extends React.Component {
 	state = {
@@ -13,24 +14,27 @@ class NewDeck extends React.Component {
 		const { title, topic } = this.state;
 
 		saveDeck({ title, topic });
-		// this.props.dispatch(addDeck({ title, topic }));
-		// this.props.navigation.navigate('DeckView', { })
+		this.props.addNewDeck({ title, topic });
+		this.props.navigation.navigate("DeckView", { entryId: title });
+		this.setState({ title: "", topic: " " });
 	};
 
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text>NEW DECK</Text>
+				<Text style={styles.heading}>NEW DECK</Text>
 
-				<Text>Title:</Text>
+				<Text style={styles.label}>Title:</Text>
 				<TextInput
-					onChangeText={text => this.setState({ title: text })}
+					style={styles.input}
+					onChangeText={title => this.setState({ title })}
 					value={this.state.title}
 				/>
 
-				<Text>Topic:</Text>
+				<Text style={styles.label}>Topic:</Text>
 				<TextInput
-					onChangeText={text => this.setState({ topic: text })}
+					style={styles.input}
+					onChangeText={topic => this.setState({ topic })}
 					value={this.state.topic}
 				/>
 
@@ -46,7 +50,28 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 		alignItems: "center",
 		justifyContent: "center"
+	},
+	heading: {
+		fontSize: 30,
+		marginBottom: 28
+	},
+	label: {
+		color: "#333"
+	},
+	input: {
+		width: 200,
+		padding: 8,
+		marginBottom: 24
 	}
 });
 
-export default NewDeck;
+function mapDispatchToProps(dispatch) {
+	return {
+		addNewDeck: deck => dispatch(addDeck(deck))
+	};
+}
+
+export default connect(
+	null,
+	mapDispatchToProps
+)(NewDeck);
