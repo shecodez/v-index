@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { StyleSheet, Text, View } from "react-native";
-import { white, blue, green } from "./../../utils/colors";
+import { white, blue, green, orange } from "./../../utils/colors";
 
 import CustomButton from "./../CustomButton";
 
@@ -17,21 +17,25 @@ class DeckView extends React.Component {
 
 		return (
 			<View style={styles.container}>
-				<Text>{deck.title}</Text>
-				<Text>{deck.cards.length} Cards</Text>
+				<View style={styles.card}>
+					<Text style={styles.header}>{deck.title}</Text>
+					<Text style={styles.subHeader}>
+						{deck.cards.length} Cards
+					</Text>
 
-				<CustomButton
-					styles={styles}
-					text={"Add Card"}
-					onPress={() => this.goto("NewCard", deck)}
-					color={blue}
-				/>
-				<CustomButton
-					styles={styles}
-					text={"Start Quiz"}
-					onPress={() => this.goto("AddCard", deck)}
-					color={green}
-				/>
+					<CustomButton
+						styles={styles}
+						text={"Add Card"}
+						onPress={() => this.goto("NewCard", deck)}
+						color={blue}
+					/>
+					<CustomButton
+						styles={styles}
+						text={"Begin Review"}
+						onPress={() => this.goto("AddCard", deck)}
+						color={green}
+					/>
+				</View>
 			</View>
 		);
 	}
@@ -41,7 +45,35 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: "center",
-		justifyContent: "center"
+		justifyContent: "center",
+		backgroundColor: white
+	},
+	card: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: orange,
+		margin: 20,
+		padding: 10,
+		alignSelf: "stretch",
+		borderRadius: 10,
+		shadowColor: "rgba(0,0,0,0.34)",
+		shadowOffset: {
+			width: 0,
+			height: 3
+		},
+		shadowRadius: 4,
+		shadowOpacity: 1
+	},
+	header: {
+		textAlign: "center",
+		fontSize: 40,
+		color: white
+	},
+	subHeader: {
+		fontSize: 32,
+		color: white,
+		marginBottom: 160
 	},
 	adoBtn: {
 		padding: 10,

@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View, StatusBar } from "react-native";
 import {
 	createBottomTabNavigator,
 	createStackNavigator
 } from "react-navigation";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Constants } from "expo";
 import { purple, white } from "./utils/colors";
 import { Provider } from "react-redux";
 
@@ -16,6 +17,18 @@ import DeckList from "./components/deck/DeckList";
 import DeckView from "./components/deck/DeckView";
 
 import NewCard from "./components/card/NewCard";
+
+function CustomStatusBar({ backgroundColor, ...props }) {
+	return (
+		<View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+			<StatusBar
+				translucent
+				backgroundColor={backgroundColor}
+				{...props}
+			/>
+		</View>
+	);
+}
 
 const Tabs = createBottomTabNavigator(
 	{
@@ -93,6 +106,10 @@ export default class App extends React.Component {
 		return (
 			<Provider store={store}>
 				<View style={{ flex: 1 }}>
+					<CustomStatusBar
+						backgroundColor={purple}
+						barStyle="light-content"
+					/>
 					<MainNavigator />
 				</View>
 			</Provider>
