@@ -12,6 +12,7 @@ class NewDeck extends React.Component {
 
 	submit = () => {
 		const { title, topic } = this.state;
+		if (title === "") return;
 
 		saveDeck({ title, topic });
 		this.props.addNewDeck({ title, topic });

@@ -2,25 +2,28 @@ import React from "react";
 import { connect } from "react-redux";
 import { StyleSheet, Text, View } from "react-native";
 import { white, blue, green, orange } from "./../../utils/colors";
+import { pluralize } from "./../../utils/helpers";
 
 import CustomButton from "./../CustomButton";
 
 class DeckView extends React.Component {
 	goto = (screen, deck) => {
 		this.props.navigation.navigate(screen, {
-			entryId: deck
+			entryId: deck.title
 		});
 	};
 
 	render() {
 		const { deck } = this.props;
 
+		const beginReviewDisabled = () => deck.cards.length === 0;
+
 		return (
 			<View style={styles.container}>
 				<View style={styles.card}>
 					<Text style={styles.header}>{deck.title}</Text>
 					<Text style={styles.subHeader}>
-						{deck.cards.length} Cards
+						{pluralize(deck.cards.length, "Card")}
 					</Text>
 
 					<CustomButton
@@ -32,8 +35,9 @@ class DeckView extends React.Component {
 					<CustomButton
 						styles={styles}
 						text={"Begin Review"}
-						onPress={() => this.goto("AddCard", deck)}
+						onPress={() => this.goto("Review", deck)}
 						color={green}
+						disabled={beginReviewDisabled()}
 					/>
 				</View>
 			</View>
@@ -81,6 +85,14 @@ const styles = StyleSheet.create({
 		height: 45,
 		margin: 5,
 		width: 170
+	},
+	adoBtnDisabled: {
+		padding: 10,
+		borderRadius: 7,
+		height: 45,
+		margin: 5,
+		width: 170,
+		opacity: 0.45
 	},
 	btnText: {
 		color: white,

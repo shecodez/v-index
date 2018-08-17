@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
 import { orange, white } from "./../../utils/colors";
 import { getDecks } from "../../utils/api";
 import { receiveDecks } from "../../actions/decks";
+import { pluralize } from "./../../utils/helpers";
 
 class DeckList extends React.Component {
 	componentDidMount() {
@@ -28,7 +29,7 @@ class DeckList extends React.Component {
 							<Text style={styles.header}>{title}</Text>
 							<Text style={styles.subHeader}>{topic}</Text>
 							<Text style={styles.deckLength}>
-								{cards.length} Cards
+								{pluralize(cards.length, "Card")}
 							</Text>
 
 							<Button

@@ -23,9 +23,10 @@ class NewCard extends React.Component {
 	submit = () => {
 		const deck = this.props.navigation.state.params.entryId;
 		const { front, back } = this.state;
+		if (front === "" || back === "") return;
 
-		this.props.dispatch(addCard({ deck: deck.title, front, back }));
-		saveCardToDeck(deck.title, { front, back });
+		this.props.dispatch(addCard({ deck, front, back }));
+		saveCardToDeck(deck, { front, back });
 
 		this.setState({ front: "", back: "" });
 

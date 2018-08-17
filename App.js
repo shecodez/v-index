@@ -8,6 +8,7 @@ import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Constants } from "expo";
 import { purple, white } from "./utils/colors";
 import { Provider } from "react-redux";
+import { setLocalNotification } from "./utils/helpers";
 
 import configureStore from "./store/configureStore";
 const store = configureStore();
@@ -17,6 +18,8 @@ import DeckList from "./components/deck/DeckList";
 import DeckView from "./components/deck/DeckView";
 
 import NewCard from "./components/card/NewCard";
+
+import Review from "./components/anki/Review";
 
 function CustomStatusBar({ backgroundColor, ...props }) {
 	return (
@@ -98,10 +101,24 @@ const MainNavigator = createStackNavigator({
 				backgroundColor: purple
 			}
 		}
+	},
+	Review: {
+		screen: Review,
+		navigationOptions: {
+			title: "Review",
+			headerTintColor: white,
+			headerStyle: {
+				backgroundColor: purple
+			}
+		}
 	}
 });
 
 export default class App extends React.Component {
+	componentDidMount() {
+		setLocalNotification();
+	}
+
 	render() {
 		return (
 			<Provider store={store}>
