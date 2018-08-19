@@ -6,7 +6,7 @@ import {
 } from "react-navigation";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Constants } from "expo";
-import { purple, white } from "./utils/colors";
+import { purple, white, blue } from "./utils/colors";
 import { Provider } from "react-redux";
 import { setLocalNotification } from "./utils/helpers";
 
@@ -105,11 +105,7 @@ const MainNavigator = createStackNavigator({
 	Review: {
 		screen: Review,
 		navigationOptions: {
-			title: "Review",
-			headerTintColor: white,
-			headerStyle: {
-				backgroundColor: purple
-			}
+			header: null
 		}
 	}
 });
@@ -123,10 +119,6 @@ export default class App extends React.Component {
 		return (
 			<Provider store={store}>
 				<View style={{ flex: 1 }}>
-					<CustomStatusBar
-						backgroundColor={purple}
-						barStyle="light-content"
-					/>
 					<MainNavigator />
 				</View>
 			</Provider>

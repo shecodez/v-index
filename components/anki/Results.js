@@ -14,9 +14,16 @@ import CustomButton from "./../CustomButton";
 
 class Results extends React.Component {
 	render() {
+		const { right, wrong } = this.props;
+
 		return (
 			<View style={styles.container}>
 				<Text style={styles.header}>Assessment</Text>
+
+				<Text>{`Correct: ${right}`}</Text>
+				<Text>{`Incorrect: ${wrong}`}</Text>
+
+				<Text>{`${(right / (right + wrong)) * 100}% Mastered`}</Text>
 
 				<CustomButton
 					styles={styles}

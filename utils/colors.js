@@ -35,9 +35,10 @@ export function getColorHash(name) {
 	return colors[index];
 }
 
-export const red = "#e54b4b";
-export const purple = "#292477";
-export const white = "#ffffff";
+export const red = "#FF7955";
+export const purple = "#7955FF";
+export const white = "#FFFFFF";
 export const orange = "#f26f28";
-export const blue = "#4e4cb8";
-export const green = "#62a87c";
+export const blue = "#55CDFF";
+export const green = "#55FF79";
+export const dark = "#51595E";

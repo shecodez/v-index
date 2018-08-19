@@ -1,4 +1,4 @@
-import { ADD_DECK, RECEIVE_DECKS } from "../constants/actionTypes";
+import { ADD_DECK, RECEIVE_DECKS } from "./types";
 
 export function addDeck(deck) {
 	return {

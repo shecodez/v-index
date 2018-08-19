@@ -1,14 +1,14 @@
 import uuidV4 from "uuid/v4";
 import { AsyncStorage } from "react-native";
 
-const VINDEXCARDS_STORAGE_KEY = "vindexcards: decks";
+const STORAGE_KEY = "vindexcards: decks";
 
 // front: can be a image, text, video, sound, or equation
 // back: shows answer, info about the question, and notes about the answer
 
 const initData = {
-	Japanese: {
-		id: "1",
+	JLPT5: {
+		id: uuidV4(),
 		title: "JLPT5",
 		topic: "LANGUAGE",
 		cards: [
@@ -49,7 +49,7 @@ const initData = {
 		]
 	},
 	JavaScript: {
-		id: "2",
+		id: uuidV4(),
 		title: "JavaScript",
 		topic: "PROGRAMMING",
 		cards: [
@@ -73,12 +73,9 @@ export const getData = () => {
 };
 
 export function getDecks(deck) {
-	return AsyncStorage.getItem(VINDEXCARDS_STORAGE_KEY).then(results => {
+	return AsyncStorage.getItem(STORAGE_KEY).then(results => {
 		if (results === null) {
-			AsyncStorage.setItem(
-				VINDEXCARDS_STORAGE_KEY,
-				JSON.stringify(initData)
-			);
+			AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(initData));
 			return initData;
 		} else {
 			return JSON.parse(results);
@@ -88,7 +85,7 @@ export function getDecks(deck) {
 
 export function saveDeck(deck) {
 	return AsyncStorage.mergeItem(
-		VINDEXCARDS_STORAGE_KEY,
+		STORAGE_KEY,
 		JSON.stringify({
 			[deck.title]: {
 				id: uuidV4(),
@@ -101,14 +98,11 @@ export function saveDeck(deck) {
 }
 
 export function saveCardToDeck(deck, card) {
-	return AsyncStorage.getItem(VINDEXCARDS_STORAGE_KEY)
+	return AsyncStorage.getItem(STORAGE_KEY)
 		.then(results => JSON.parse(results))
 		.then(results => {
 			results[deck].cards.push(card);
-			AsyncStorage.setItem(
-				VINDEXCARDS_STORAGE_KEY,
-				JSON.stringify(results)
-			);
+			AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(results));
 			return results;
 		});
 }
