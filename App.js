@@ -1,111 +1,64 @@
 import React from "react";
-import { View, StatusBar } from "react-native";
 import {
 	createBottomTabNavigator,
 	createStackNavigator
 } from "react-navigation";
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Constants } from "expo";
-import { purple, white, blue } from "./utils/colors";
+import { View } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Provider } from "react-redux";
-import { setLocalNotification } from "./utils/helpers";
+import { NewDeck, NewCard, DeckList, Deck, Review } from "./components";
+import { setLocalNotification } from "./utils/notifs";
 
 import configureStore from "./store/configureStore";
 const store = configureStore();
 
-import NewDeck from "./components/deck/NewDeck";
-import DeckList from "./components/deck/DeckList";
-import DeckView from "./components/deck/DeckView";
-
-import NewCard from "./components/card/NewCard";
-
-import Review from "./components/anki/Review";
-
-function CustomStatusBar({ backgroundColor, ...props }) {
-	return (
-		<View style={{ backgroundColor, height: Constants.statusBarHeight }}>
-			<StatusBar
-				translucent
-				backgroundColor={backgroundColor}
-				{...props}
-			/>
-		</View>
-	);
-}
-
-const Tabs = createBottomTabNavigator(
-	{
-		DeckList: {
-			screen: DeckList,
-			navigationOptions: {
-				tabBarLabel: "Decks",
-				tabBarIcon: ({ tintColor }) => (
-					<MaterialCommunityIcons
-						name="cards"
-						size={30}
-						color={tintColor}
-					/>
-				)
-			}
-		},
-		NewDeck: {
-			screen: NewDeck,
-			navigationOptions: {
-				tabBarLabel: "New Deck",
-				tabBarIcon: ({ tintColor }) => (
-					<FontAwesome
-						name="plus-square"
-						size={30}
-						color={tintColor}
-					/>
-				)
-			}
+const Tabs = createBottomTabNavigator({
+	DeckList: {
+		screen: DeckList,
+		navigationOptions: {
+			title: "Decks",
+			tabBarLabel: "Decks",
+			tabBarIcon: () => <MaterialCommunityIcons name="cards" size={30} />
 		}
-		// Browse: {<MaterialCommunityIcons name="folder-search" size={30} color={tintColor} />}
-		// account: { <FontAwesome name="user" size={30} color={tintColor} /> }
 	},
-	{
-		tabBarOptions: {
-			activeTintColor: purple,
-			style: {
-				height: 56,
-				backgroundColor: white
-			}
+	NewDeck: {
+		screen: NewDeck,
+		navigationOptions: {
+			title: "New Deck",
+			tabBarLabel: "New Deck",
+			tabBarIcon: () => (
+				<MaterialCommunityIcons name="cards-outline" size={30} />
+			)
 		}
 	}
-);
+});
 
 const MainNavigator = createStackNavigator({
 	Home: {
-		screen: Tabs,
+		screen: Tabs
+	},
+	DeckList: {
+		screen: DeckList,
 		navigationOptions: {
-			header: null
+			title: "Decks"
 		}
 	},
-	DeckView: {
-		screen: DeckView,
+	Deck: {
+		screen: Deck,
 		navigationOptions: {
-			title: "Deck Info",
-			headerTintColor: white,
-			headerStyle: {
-				backgroundColor: purple
-			}
+			title: "Title"
 		}
 	},
 	NewCard: {
 		screen: NewCard,
 		navigationOptions: {
-			title: "New Card",
-			headerTintColor: white,
-			headerStyle: {
-				backgroundColor: purple
-			}
+			title: "New Card"
 		}
 	},
 	Review: {
 		screen: Review,
 		navigationOptions: {
-			header: null
+			title: "Review"
 		}
 	}
 });
@@ -125,3 +78,6 @@ export default class App extends React.Component {
 		);
 	}
 }
+/* Design credits: 
+https://www.youtube.com/watch?v=j71n1whTuFk && 
+https://dribbble.com/shots/3304392-Flashcard-App */

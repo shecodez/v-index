@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { toLower } from "lodash";
 import { NavigationActions } from "react-navigation";
 import {
 	StyleSheet,
@@ -12,13 +13,12 @@ import {
 	Dimensions
 } from "react-native";
 import { white, red, green, blue } from "./../../utils/colors";
-
-//import StatusButtons from "./../StatusButtons";
-import Results from "./Results";
-import ProgressBar from "../ProgressBar";
+import { Results, ProgressBar } from "./../index";
+import CardFront from "../card/CardFront";
+import CardBack from "../card/CardBack";
+//import { ProgressBar } from "./../cmon/ProgressBar";
 
 const DEVICE_WIDTH = Dimensions.get("window").width;
-
 class Review extends React.Component {
 	state = {
 		card: 0,
@@ -310,30 +310,24 @@ class Review extends React.Component {
 						<Animated.View
 							{...this.panResponder.panHandlers}
 							style={[
-								styles.vindexCard,
-								{
-									opacity: this.cardOpacity
-								},
+								{ opacity: this.cardOpacity },
 								backAnimatedStyle
 							]}
 						>
-							<Text style={styles.cardText}>
-								{deck.cards[card].back}
-							</Text>
+							<CardBack
+								cardBack={deck.cards[card].back}
+								onPress={this.flipCard}
+							/>
 						</Animated.View>
 					) : (
-						<Animated.View
-							style={[styles.vindexCard, frontAnimatedStyle]}
-						>
-							<Text style={styles.cardText}>
-								{deck.cards[card].front}
-							</Text>
+						<Animated.View style={frontAnimatedStyle}>
+							<CardFront
+								btnColor={white}
+								cardFront={deck.cards[card].front}
+								onPress={this.flipCard}
+							/>
 						</Animated.View>
 					)}
-					<TouchableOpacity
-						style={styles.flipArea}
-						onPress={this.flipCard}
-					/>
 
 					<ProgressBar i={card + 1} max={deck.cards.length} />
 				</View>
@@ -357,17 +351,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		backgroundColor: "transparent"
 	},
-	vindexCard: {
-		backgroundColor: white,
-		padding: 25,
-		width: "80%",
-		height: "50%",
-		position: "absolute",
-		justifyContent: "center",
-		alignItems: "center",
-		borderRadius: 10,
-		backfaceVisibility: "hidden"
-	},
+
 	nextCard: {
 		backgroundColor: white,
 		width: "80%",
@@ -376,24 +360,13 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: 10
-	},
-	cardText: {
-		fontSize: 25,
-		textAlign: "center"
-	},
-	flipArea: {
-		backgroundColor: "transparent",
-		width: "60%",
-		height: "20%",
-		position: "absolute",
-		justifyContent: "center",
-		alignItems: "center"
 	}
 });
 
 function mapStateToProps(state, props) {
+	const deckId = toLower(props.navigation.state.params.deckId);
 	return {
-		deck: state.decks[props.navigation.state.params.entryId]
+		deck: state.decks[deckId]
 	};
 }
 

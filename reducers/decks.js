@@ -12,7 +12,7 @@ export default function(state = {}, action) {
 			const newDeck = {
 				[action.deck.title]: {
 					title: action.deck.title,
-					topic: action.deck.topic,
+					description: action.deck.description,
 					cards: []
 				}
 			};
@@ -28,10 +28,10 @@ export default function(state = {}, action) {
 		case ADD_CARD:
 			return {
 				...state,
-				[action.card.deck]: {
-					...state[action.card.deck],
+				[action.card.deckId]: {
+					...state[action.card.deckId],
 					cards: [
-						...state[action.card.deck].cards,
+						...state[action.card.deckId].cards,
 						{ front: action.card.front, back: action.card.back }
 					]
 				}

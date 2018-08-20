@@ -1,45 +1,69 @@
 import React from "react";
 import { connect } from "react-redux";
-import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
-import { orange, white } from "./../../utils/colors";
+import { toLower } from "lodash";
+import {
+	StyleSheet,
+	Text,
+	View,
+	ScrollView,
+	FlatList,
+	TouchableOpacity
+} from "react-native";
+import { getColorHash, dark, grey, white } from "./../../utils/colors";
 import { getDecks } from "../../utils/api";
 import { receiveDecks } from "../../actions/decks";
 import { pluralize } from "./../../utils/helpers";
 
 class DeckList extends React.Component {
-	componentDidMount() {
-		getDecks().then(decks => this.props.receiveAllDecks(decks));
+	async componentDidMount() {
+		const { dispatch } = this.props;
+		const data = await getDecks();
+		dispatch(receiveDecks(data));
 	}
 
 	goto = deck => {
-		this.props.navigation.navigate("DeckView", {
-			entryId: deck
-		});
+		const deckId = toLower(deck);
+		this.props.navigation.navigate("Deck", { deckId });
 	};
 
 	render() {
 		const { decks } = this.props;
 
+		// In case there are no decks, we give some info.
+		if (decks === null) {
+			return (
+				<View style={styles.container}>
+					<Text>There are currently no decks in your app.</Text>
+					<Text>
+						Add a new deck by pressing the floating plus button
+						below.
+					</Text>
+				</View>
+			);
+		}
 		return (
-			<ScrollView style={styles.container}>
-				{Object.keys(decks).map(deck => {
-					const { title, topic, cards } = decks[deck];
-					return (
-						<View key={deck} style={styles.card}>
-							<Text style={styles.header}>{title}</Text>
-							<Text style={styles.subHeader}>{topic}</Text>
-							<Text style={styles.deckLength}>
-								{pluralize(cards.length, "Card")}
-							</Text>
-
-							<Button
-								onPress={() => this.goto(deck)}
-								title="View Deck"
-							/>
-						</View>
-					);
-				})}
-			</ScrollView>
+			<View style={styles.container}>
+				<FlatList
+					data={Object.values(decks)}
+					renderItem={({ item: { id, title, cards } }) => {
+						return (
+							<TouchableOpacity
+								style={[
+									styles.deckLiContainer,
+									{ borderColor: getColorHash(title) }
+								]}
+								onPress={() => this.goto(title)}
+							>
+								<Text style={styles.btnTitle}>{title}</Text>
+								<Text style={styles.btnText}>
+									{pluralize(cards.length, "Card")}
+								</Text>
+							</TouchableOpacity>
+						);
+					}}
+					keyExtractor={item => item.id}
+				/>
+			</View>
 		);
 	}
 }
@@ -47,37 +71,26 @@ class DeckList extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignSelf: "stretch",
-		padding: 5
+		margin: 15
 	},
-	card: {
-		//flex: 1,
-		alignItems: "center",
+	deckLiContainer: {
+		flex: 1,
+		alignItems: "flex-start",
 		justifyContent: "center",
-		backgroundColor: orange,
-		margin: 8,
-		height: 234,
+		marginVertical: 8,
+		padding: 15,
 		borderRadius: 10,
-		shadowColor: "rgba(0,0,0,0.34)",
-		shadowOffset: {
-			width: 0,
-			height: 3
-		},
-		shadowRadius: 4,
-		shadowOpacity: 1
+		height: 96,
+		borderLeftWidth: 10,
+		backgroundColor: white
 	},
-	header: {
-		fontSize: 30,
-		color: white
+	btnTitle: {
+		fontSize: 25,
+		color: dark
 	},
-	subHeader: {
+	btnText: {
 		fontSize: 18,
-		color: white,
-		marginBottom: 10
-	},
-	deckLength: {
-		color: white,
-		marginBottom: 8
+		color: grey
 	}
 });
 
@@ -87,13 +100,7 @@ function mapStateToProps(state) {
 	};
 }
 
-function mapDispatchToProps(dispatch) {
-	return {
-		receiveAllDecks: decks => dispatch(receiveDecks(decks))
-	};
-}
-
 export default connect(
 	mapStateToProps,
-	mapDispatchToProps
+	null
 )(DeckList);

@@ -1,46 +1,69 @@
 import React from "react";
 import { connect } from "react-redux";
-import { StyleSheet, View, Text, Button, TextInput } from "react-native";
-import { saveDeck } from "./../../utils/api";
+import { toLower } from "lodash";
+import {
+	StyleSheet,
+	View,
+	Text,
+	TextInput,
+	KeyboardAvoidingView
+} from "react-native";
+import { saveNewDeck } from "./../../utils/api";
 import { addDeck } from "./../../actions/decks";
+import { blue, white } from "./../../utils/colors";
+import CardButton from "./../cmon/CardButton";
 
 class NewDeck extends React.Component {
 	state = {
 		title: "",
-		topic: ""
+		description: ""
 	};
 
 	submit = () => {
-		const { title, topic } = this.state;
+		const { title, description } = this.state;
+		const { addNewDeck, navigation } = this.props;
+
 		if (title === "") return;
 
-		saveDeck({ title, topic });
-		this.props.addNewDeck({ title, topic });
-		this.props.navigation.navigate("DeckView", { entryId: title });
-		this.setState({ title: "", topic: " " });
+		const deckId = toLower(title);
+		saveNewDeck({ title, description });
+		addNewDeck({ title, description });
+
+		this.initialState();
+		navigation.navigate("Deck", { deckId, title });
+	};
+
+	initialState = () => {
+		this.setState({ title: "", description: "" });
 	};
 
 	render() {
 		return (
-			<View style={styles.container}>
-				<Text style={styles.heading}>NEW DECK</Text>
+			<KeyboardAvoidingView behavior="padding" style={styles.container}>
+				<View style={styles.formContainer}>
+					<View style={styles.card}>
+						<View style={styles.cardContents}>
+							<View style={styles.block}>
+								<Text style={styles.title}>
+									What is the title of your new deck?
+								</Text>
+							</View>
 
-				<Text style={styles.label}>Title:</Text>
-				<TextInput
-					style={styles.input}
-					onChangeText={title => this.setState({ title })}
-					value={this.state.title}
-				/>
-
-				<Text style={styles.label}>Topic:</Text>
-				<TextInput
-					style={styles.input}
-					onChangeText={topic => this.setState({ topic })}
-					value={this.state.topic}
-				/>
-
-				<Button onPress={this.submit} title="Submit" />
-			</View>
+							<View style={styles.inputContainer}>
+								<TextInput
+									style={styles.input}
+									placeholder="Deck Title"
+									onChangeText={title =>
+										this.setState({ title })
+									}
+									value={this.state.title}
+								/>
+							</View>
+						</View>
+						<CardButton onPress={this.submit} text="Submit" />
+					</View>
+				</View>
+			</KeyboardAvoidingView>
 		);
 	}
 }
@@ -48,21 +71,45 @@ class NewDeck extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
+		backgroundColor: blue
+	},
+	formContainer: {
+		flex: 0.4,
+		paddingLeft: 30,
+		paddingRight: 30,
+		paddingTop: 30,
+		minHeight: 120
+	},
+	card: {
+		flex: 1,
+		backgroundColor: white,
+		borderRadius: 10
+	},
+	cardContents: {
+		flex: 4,
+		paddingTop: 30,
+		paddingLeft: 30,
+		paddingRight: 30
+	},
+	block: {
+		flex: 1,
 		justifyContent: "center"
 	},
-	heading: {
+	title: {
 		fontSize: 30,
-		marginBottom: 28
+		lineHeight: 30,
+		textAlign: "left",
+		fontWeight: "600",
+		marginVertical: 24
 	},
-	label: {
-		color: "#333"
+	inputContainer: {
+		flex: 1,
+		justifyContent: "center"
 	},
 	input: {
-		width: 200,
-		padding: 8,
-		marginBottom: 24
+		padding: 5,
+		fontSize: 16,
+		paddingVertical: 15
 	}
 });
 

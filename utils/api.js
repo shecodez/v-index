@@ -1,16 +1,17 @@
-import uuidV4 from "uuid/v4";
 import { AsyncStorage } from "react-native";
+import uuidV4 from "uuid/v4";
+import { toLower } from "lodash";
 
-const STORAGE_KEY = "vindexcards: decks";
+const STORAGE_KEY = "vindexcards:decks";
 
 // front: can be a image, text, video, sound, or equation
 // back: shows answer, info about the question, and notes about the answer
 
 const initData = {
-	JLPT5: {
+	jlpt5: {
 		id: uuidV4(),
 		title: "JLPT5",
-		topic: "LANGUAGE",
+		description: "",
 		cards: [
 			{
 				front: "一",
@@ -48,10 +49,10 @@ const initData = {
 			}
 		]
 	},
-	JavaScript: {
+	javascript: {
 		id: uuidV4(),
 		title: "JavaScript",
-		topic: "PROGRAMMING",
+		description: "",
 		cards: [
 			{
 				front: "What is a variable?",
@@ -72,37 +73,48 @@ export const getData = () => {
 	return initData;
 };
 
-export function getDecks(deck) {
-	return AsyncStorage.getItem(STORAGE_KEY).then(results => {
-		if (results === null) {
+/* prod getDecks function
+export function getDecks() {
+	return AsyncStorage.getItem(STORAGE_KEY, (err, result) => {
+	  if (result === null) {
+		return { decks: {} };
+	  }
+	  return JSON.parse(result);
+	});
+} */
+
+// dev getDecks function
+export function getDecks() {
+	return AsyncStorage.getItem(STORAGE_KEY).then(result => {
+		if (result === null) {
 			AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(initData));
 			return initData;
 		} else {
-			return JSON.parse(results);
+			return JSON.parse(result);
 		}
 	});
 }
 
-export function saveDeck(deck) {
+export function saveNewDeck(deck) {
+	const deckId = toLower(deck.title);
 	return AsyncStorage.mergeItem(
 		STORAGE_KEY,
 		JSON.stringify({
-			[deck.title]: {
+			[deckId]: {
 				id: uuidV4(),
 				title: deck.title,
-				topic: deck.topic,
+				description: deck.description || "",
 				cards: []
 			}
 		})
 	);
 }
 
-export function saveCardToDeck(deck, card) {
-	return AsyncStorage.getItem(STORAGE_KEY)
-		.then(results => JSON.parse(results))
-		.then(results => {
-			results[deck].cards.push(card);
-			AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(results));
-			return results;
-		});
+export function saveNewCard(deck, card) {
+	const deckId = toLower(deck);
+	return AsyncStorage.getItem(STORAGE_KEY).then(result => {
+		const data = JSON.parse(result);
+		data[deckId].cards.push(card);
+		AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+	});
 }
