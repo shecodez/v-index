@@ -41,8 +41,8 @@ class NewDeck extends React.Component {
 		return (
 			<KeyboardAvoidingView behavior="padding" style={styles.container}>
 				<View style={styles.formContainer}>
-					<View style={styles.card}>
-						<View style={styles.cardContents}>
+					<View style={styles.deck}>
+						<View style={styles.deckContents}>
 							<View style={styles.block}>
 								<Text style={styles.title}>
 									What is the title of your new deck?
@@ -52,7 +52,7 @@ class NewDeck extends React.Component {
 							<View style={styles.inputContainer}>
 								<TextInput
 									style={styles.input}
-									placeholder="Deck Title"
+									placeholder="Title"
 									onChangeText={title =>
 										this.setState({ title })
 									}
@@ -60,7 +60,7 @@ class NewDeck extends React.Component {
 								/>
 							</View>
 						</View>
-						<CardButton onPress={this.submit} text="Submit" />
+						<CardButton onPress={this.submit} text="Create Deck" />
 					</View>
 				</View>
 			</KeyboardAvoidingView>
@@ -78,14 +78,15 @@ const styles = StyleSheet.create({
 		paddingLeft: 30,
 		paddingRight: 30,
 		paddingTop: 30,
-		minHeight: 120
+		minHeight: 160
 	},
-	card: {
+	deck: {
 		flex: 1,
 		backgroundColor: white,
-		borderRadius: 10
+		borderRadius: 10,
+		elevation: 4
 	},
-	cardContents: {
+	deckContents: {
 		flex: 4,
 		paddingTop: 30,
 		paddingLeft: 30,
@@ -96,11 +97,10 @@ const styles = StyleSheet.create({
 		justifyContent: "center"
 	},
 	title: {
-		fontSize: 30,
-		lineHeight: 30,
+		fontSize: 35,
+		lineHeight: 35,
 		textAlign: "left",
-		fontWeight: "600",
-		marginVertical: 24
+		fontWeight: "600"
 	},
 	inputContainer: {
 		flex: 1,
@@ -108,8 +108,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		padding: 5,
-		fontSize: 16,
-		paddingVertical: 15
+		fontSize: 16
 	}
 });
 

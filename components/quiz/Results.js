@@ -28,7 +28,6 @@ class Results extends React.Component {
 							<CardButton
 								text={"Back To Deck"}
 								onPress={this.props.goBack}
-								color={green}
 							/>
 						</View>
 					</View>
@@ -61,7 +60,8 @@ const styles = StyleSheet.create({
 	card: {
 		flex: 1,
 		backgroundColor: white,
-		borderRadius: 10
+		borderRadius: 10,
+		elevation: 4
 	},
 	cardContents: {
 		flex: 4,

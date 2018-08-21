@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import { toLower } from "lodash";
 import { StyleSheet, Text, View } from "react-native";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
 	white,
 	dark,
@@ -11,15 +13,22 @@ import {
 	darken
 } from "./../../utils/colors";
 import { pluralize } from "./../../utils/helpers";
-
 import CardButton from "./../cmon/CardButton";
 import CustomButton from "./../cmon/CustomButton";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 class Deck extends React.Component {
+	static navigationOptions = ({ navigation }) => {
+		const { title } = navigation.state.params;
+		return {
+			title: title
+		};
+	};
+
 	goto = (screen, deck) => {
+		const deckId = toLower(deck.title);
 		this.props.navigation.navigate(screen, {
-			deckId: deck.title
+			deckId,
+			title: deck.title
 		});
 	};
 
@@ -33,9 +42,9 @@ class Deck extends React.Component {
 					{ backgroundColor: getColorHash(deck.title) }
 				]}
 			>
-				<View style={styles.cardContainer}>
-					<View style={styles.card}>
-						<View style={styles.cardContents}>
+				<View style={styles.deckContainer}>
+					<View style={styles.deck}>
+						<View style={styles.deckContents}>
 							<View style={styles.block}>
 								<Text style={styles.header}>{deck.title}</Text>
 
@@ -62,7 +71,7 @@ class Deck extends React.Component {
 				<View style={styles.fabContainer}>
 					<CustomButton
 						styles={styles}
-						text={<MaterialCommunityIcons name="plus" size={36} />}
+						text={<MaterialCommunityIcons name="plus" size={38} />}
 						onPress={() => this.goto("NewCard", deck)}
 						color={blue}
 					/>
@@ -76,19 +85,20 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
-	cardContainer: {
+	deckContainer: {
 		flex: 0.7,
 		paddingLeft: 30,
 		paddingRight: 30,
-		paddingTop: 30,
+		paddingTop: 50,
 		minHeight: 120
 	},
-	card: {
+	deck: {
 		flex: 1,
 		backgroundColor: white,
-		borderRadius: 10
+		borderRadius: 10,
+		elevation: 4
 	},
-	cardContents: {
+	deckContents: {
 		flex: 4,
 		justifyContent: "center"
 	},
@@ -99,34 +109,29 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		textAlign: "center",
-		fontSize: 30,
+		fontSize: 35,
 		fontWeight: "600",
 		color: dark
 	},
 	subHeader: {
-		fontSize: 20,
 		color: grey
 	},
 	// styled as a fab
 	fabContainer: {
 		position: "absolute",
-		right: 25,
-		bottom: 25
+		right: 15,
+		bottom: 15
 	},
 	adoBtn: {
 		padding: 10,
 		margin: 0,
-		borderRadius: 50,
-		height: 64,
-		width: 64,
-		borderColor: darken(blue, 40),
-		borderBottomWidth: 3,
-		borderLeftWidth: 1,
-		borderRightWidth: 2
+		borderRadius: 30,
+		height: 60,
+		width: 60,
+		elevation: 6
 	},
 	btnText: {
 		color: white,
-		fontSize: 20,
 		textAlign: "center"
 	}
 });

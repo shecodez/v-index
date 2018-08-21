@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { dark, white, darken } from "./../../utils/colors";
+import { dark, white } from "./../../utils/colors";
 import CardButton from "./../cmon/CardButton";
 
 // TODO: Add fade in/out animations
@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
 	card: {
 		flex: 1,
 		backgroundColor: white,
-		borderRadius: 10
+		borderRadius: 10,
+		elevation: 4
 	},
 	cardContents: {
 		flex: 4,

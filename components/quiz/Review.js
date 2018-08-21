@@ -16,7 +16,6 @@ import { white, red, green, blue } from "./../../utils/colors";
 import { Results, ProgressBar } from "./../index";
 import CardFront from "../card/CardFront";
 import CardBack from "../card/CardBack";
-//import { ProgressBar } from "./../cmon/ProgressBar";
 
 const DEVICE_WIDTH = Dimensions.get("window").width;
 class Review extends React.Component {
@@ -287,10 +286,10 @@ class Review extends React.Component {
 					]}
 				>
 					{this.state.showLeftSwipeText ? (
-						<Text style={styles.swipeText}>Need more Review</Text>
+						<Text style={styles.swipeText}>I Need to Review</Text>
 					) : null}
 					{this.state.showRightSwipeText ? (
-						<Text style={styles.swipeText}>I got it Right!</Text>
+						<Text style={styles.swipeText}>I Got it Right!</Text>
 					) : null}
 
 					{(this.state.showLeftSwipeText ||
@@ -351,7 +350,6 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		backgroundColor: "transparent"
 	},
-
 	nextCard: {
 		backgroundColor: white,
 		width: "80%",

@@ -1,3 +1,4 @@
+export { default as MainNavigation } from "./app/NavConfig";
 export { default as NewCard } from "./card/NewCard";
 export { default as NewDeck } from "./deck/NewDeck";
 export { default as CardFront } from "./card/CardFront";
@@ -8,3 +9,4 @@ export { default as Review } from "./quiz/Review";
 export { default as Results } from "./quiz/Results";
 export { default as CardButton } from "./cmon/CardButton";
 export { default as ProgressBar } from "./cmon/ProgressBar";
+export { default as MainNavigator } from "./app/MainNavigator";
